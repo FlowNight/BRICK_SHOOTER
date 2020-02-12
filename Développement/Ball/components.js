@@ -1,4 +1,5 @@
-// LOAD BG IMAGE
+/////// LOAD BG IMAGE ///////
+
 const BG_IMG = new Image();
 BG_IMG.src = "img/bg3.jpg";
 
@@ -13,7 +14,6 @@ SCORE_IMG.src = "img/score.png";
 
 /////// END LOAD IMAGES ////////
 
-// ************************ //
 
 /////// LOAD SOUNDS ////////
 
