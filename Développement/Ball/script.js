@@ -21,17 +21,6 @@ const MAX_LEVEL = 3;
 let GAME_OVER = false;
 let leftArrow = false;
 let rightArrow = false;
-let upPressed = false;
-let shootTable = [];
-let idShoot = 0;
-let cdShoot = 20;
-
-
-let statPaddle = {
-  vitesseTir: 0,
-  vitesseBase: 0,
-  autres: 0
-};
 
 //--------------------------------------------------------SÉLECTION DES ÉLÉMENTS----------------------------------------------------------//
 const gameover = document.getElementById("gameover");
@@ -64,14 +53,6 @@ const restart = document.getElementById("restart");
 	}
 }*/
 
-class Shoot {
-  constructor(id, cooX, cooY) {
-    this.id = 0;
-    this.cooX = cooX;
-    this.cooY = cooY
-  }
-}
-
 //-----------------------------------------------------------CRÉATION DU PADDLE-----------------------------------------------------------//
 const paddle = {
   x: cvs.width / 2 - PADDLE_WIDTH / 2,
@@ -95,9 +76,6 @@ document.addEventListener("keydown", function (event) {
   if (event.keyCode == 37) {
     leftArrow = true;
   }
-  if (event.keyCode == 38) {
-    upPressed = true;
-  }
   if (event.keyCode == 39) {
     rightArrow = true;
   }
@@ -105,9 +83,6 @@ document.addEventListener("keydown", function (event) {
 document.addEventListener("keyup", function (event) {
   if (event.keyCode == 37) {
     leftArrow = false;
-  }
-  if (event.keyCode == 38) {
-    upPressed = false;
   }
   if (event.keyCode == 39) {
     rightArrow = false;
@@ -123,47 +98,18 @@ function movePaddle() {
   }
 }
 
-//----------------------------------------------------------CRÉATION DES TIRS-------------------------------------------------------------//
-function updateTirs() {
-  for (let i = 0; i < shootTable.length; i++) {
-    shootTable[i].cooY -= 10;
-    ctx.fillStyle = "red"
-    ctx.fillRect(shootTable[i].cooX, shootTable[i].cooY, 5, 10);
-    if (shootTable[i].cooY < 0) {
-      shootTable.splice(i, 1)
-    }
-  }
-}
-
-function createShoot() {
-  if (upPressed == true && cdShoot == 0) {
-    //console.log("test")
-    cdShoot = 20
-    // cdShoot = statPaddle.vitesseTir
-    const shoot = new Shoot(idShoot, paddle.x + 50, paddle.y)
-    console.log(shoot)
-    idShoot++
-    shootTable.push(shoot);
-
-
-  }
-  if (cdShoot != 0) {
-    cdShoot -= 1
-  }
-}
-
-// CRÉATION DE LA BALLE
-/*const ball = {
+//----------------------------------------------------------CRÉATION DE LA BALLE----------------------------------------------------------//
+const ball = {
   x: cvs.width / 2,
   y: paddle.y - BALL_RADIUS,
   radius: BALL_RADIUS,
   speed: 5,
   dx: 3 * (Math.random() * 2 - 1),
   dy: -3
-}*/
+}
 
-// DESSIN DE LA BALLE
-/*function drawBall() {
+//----------------------------------------------------------DESSIN DE LA BALLE------------------------------------------------------------//
+function drawBall() {
   ctx.beginPath();
 
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -176,13 +122,13 @@ function createShoot() {
   ctx.closePath();
 }
 
-// MOUVEMENT DE LA BALLE
+//---------------------------------------------------------MOUVEMENT DE LA BALLE----------------------------------------------------------//
 function moveBall() {
   ball.x += ball.dx;
   ball.y += ball.dy;
 }
 
-// DÉTECTION COLLISION BALLES ET MURS
+//---------------------------------------------------DÉTECTION COLLISION BALLES ET MURS---------------------------------------------------//
 function ballWallCollision() {
   if (ball.x + ball.radius > cvs.width || ball.x - ball.radius < 0) {
     ball.dx = -ball.dx;
@@ -201,7 +147,7 @@ function ballWallCollision() {
   }
 }
 
-// RESET DE LA BALLE
+//-----------------------------------------------------------RESET DE LA BALLE------------------------------------------------------------//
 function resetBall() {
   ball.x = cvs.width / 2;
   ball.y = paddle.y - BALL_RADIUS;
@@ -209,7 +155,7 @@ function resetBall() {
   ball.dy = -3;
 }
 
-// COLLISION BALLES ET PADDLE
+//--------------------------------------------------------COLLISION BALLES ET PADDLE------------------------------------------------------//
 function ballPaddleCollision() {
   if (ball.x < paddle.x + paddle.width && ball.x > paddle.x && paddle.y < paddle.y + paddle.height && ball.y > paddle.y) {
 
@@ -229,7 +175,7 @@ function ballPaddleCollision() {
     ball.dx = ball.speed * Math.sin(angle);
     ball.dy = -ball.speed * Math.cos(angle);
   }
-}*/
+}
 
 //---------------------------------------------------------CRÉATION DES BRIQUES-----------------------------------------------------------//
 const brick = {
@@ -278,7 +224,7 @@ function drawBricks() {
 }
 
 // COLLISION DE LA BALLE / BRIQUES
-/*function ballBrickCollision() {
+function ballBrickCollision() {
   for (let r = 0; r < brick.row; r++) {
     for (let c = 0; c < brick.column; c++) {
       let b = bricks[r][c];
@@ -293,45 +239,7 @@ function drawBricks() {
       }
     }
   }
-}*/
-
-//------------------------------------------------------
-function shootBrickCollision() {
-  for (let ii = 0; ii < 1; ii++) {
-    for (let jj = 0; jj < 6; jj++) {
-      for (let kk = 0; kk < shootTable.length; kk++) {
-        let toucheBrique = false
-        if (shootTable[kk].cooY < bricks[ii][jj].y + brick.height) {
-          if (shootTable[kk].cooX > bricks[ii][jj].x && shootTable[kk].cooX < bricks[ii][jj].x + brick.width) {
-            toucheBrique = true
-          }
-          if (shootTable[kk].cooX + 4 > bricks[ii][jj].x && shootTable[kk].cooX + 4 < bricks[ii][jj].x + brick.width) {
-            toucheBrique = true
-          }
-          if (toucheBrique) {
-            console.log("detruit")
-          }
-          /*for (let r = 0; r < brick.row; r++) {
-            for (let c = 0; c < brick.column; c++) {
-              let b = bricks[r][c];
-              // if the brick isn't broken
-              if (b.status) {
-                if (shoot.x + shoot.radius > b.x && shoot.x - shoot.radius < b.x + brick.width && shoot.y + shoot.radius > b.y && shoot.y - shoot.radius < b.y + brick.height) {
-                  // BRICK_HIT.play();
-                  shoot.dy = -shoot.dy;
-                  b.status = false; // the brick is broken
-                  SCORE += SCORE_UNIT;
-                }
-              }
-            }
-          }*/
-        }
-      }
-    }
-  }
 }
-
-
 
 //---------------------------------------------------AFFICHER LES STATISTIQUES DU JEU-----------------------------------------------------//
 function showGameStats(text, textX, textY, img, imgX, imgY) {
@@ -347,7 +255,7 @@ function showGameStats(text, textX, textY, img, imgX, imgY) {
 //----------------------------------------------------------FONCTION DES DESSINS----------------------------------------------------------//
 function draw() {
   drawPaddle();
-  // drawBall();
+  drawBall();
   drawBricks();
 
   // AFFICHER LE SCORE
@@ -396,13 +304,10 @@ function levelUp() {
 //---------------------------------------------------METTRE À JOUR LES FONCTIONS DU JEU---------------------------------------------------//
 function update() {
   movePaddle();
-  // moveBall();
-  // ballWallCollision();
-  // ballPaddleCollision();
-  // ballBrickCollision();
-  shootBrickCollision();
-  createShoot();
-  updateTirs();
+  moveBall();
+  ballWallCollision();
+  ballPaddleCollision();
+  ballBrickCollision();
   gameOver();
   levelUp();
 }
