@@ -1,0 +1,20 @@
+body {
+  background-image: url("https://i.imgur.com/jXKzkEl.png");
+
+  margin: 0;
+  padding: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+a.bouton1 {
+  padding: 10px 30px;
+  background: #646262;
+  border-radius: 10px;
+  opacity: 0.4;
+  color: white;
+  position: absolute;
+  bottom: 80px;
+  right: 650px;
+  height: 26px;
+  width: 26px;
+}
