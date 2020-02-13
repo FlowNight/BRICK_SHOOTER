@@ -7,13 +7,25 @@ body {
   background-repeat: no-repeat;
 }
 a.bouton1 {
-  padding: 10px 30px;
+  padding: 10px 50px;
   background: #646262;
   border-radius: 10px;
   opacity: 0.4;
   color: white;
   position: absolute;
-  bottom: 80px;
+  bottom: 90px;
+  right: 650px;
+  height: 26px;
+  width: 26px;
+}
+a.bouton2 {
+  padding: 10px 50px;
+  background: #646262;
+  border-radius: 10px;
+  opacity: 0.4;
+  color: white;
+  position: absolute;
+  bottom: 40px;
   right: 650px;
   height: 26px;
   width: 26px;
